@@ -72,7 +72,7 @@ RUTA_SATELITE_1_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.pn
 RUTA_SATELITE_2_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
 RUTA_SATELITE_4_SELECT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
 
-RUTA_EMERGENCY_1 = os.path.join(CARPETA_ACTUAL, "emergency_help.jpg")
+RUTA_EMERGENCY_1 = os.path.join(CARPETA_ACTUAL, "emergency_help.png")
 
 def hacer_imagen (ruta:str,scaling:float)->ImageTk.PhotoImage:
     # retorna la imagen con el tipo de dato y dimensiones correctas

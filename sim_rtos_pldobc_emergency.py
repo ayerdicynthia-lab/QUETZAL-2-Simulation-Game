@@ -40,18 +40,18 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
     ) -> None:
         super().__init__(scheduler) #Master
         
-        self.geometry("800x520+20+20")
+        self.geometry("800x640+20+20")
         self.config(bg=COLOR_FONDO_EMERGENCY)
         self.title("Emergencia")
                 
         # --- ILUSTRACIONES ---
-        self.imagen_ayuda = hacer_imagen(RUTA_EMERGENCY_1,scaling=4)
+        self.imagen_ayuda = hacer_imagen(RUTA_EMERGENCY_1,scaling=5.8)
         
         # label para poner imagen
         self.muestra_imagenes : Label = Label(
             self,bg=COLOR_FONDO_EMERGENCY,
             image=self.imagen_ayuda, # La inicial
-            height=180
+            height=290
         )
         self.muestra_imagenes.pack()
         
