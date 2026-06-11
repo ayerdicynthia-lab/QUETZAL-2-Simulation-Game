@@ -25,6 +25,8 @@ from random import randint
 from sim_rtos_constantes import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY, TICK
 from sim_rtos_constantes import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY, ORBITA
 from sim_rtos_constantes import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
+from sim_rtos_constantes import RUTA_EMERGENCY_1
+from sim_rtos_constantes import hacer_imagen
 from sim_rtos_tarea import Tarea
 
 class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abrirá
@@ -38,13 +40,20 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
     ) -> None:
         super().__init__(scheduler) #Master
         
-        self.geometry("800x420+20+20")
+        self.geometry("800x520+20+20")
         self.config(bg=COLOR_FONDO_EMERGENCY)
         self.title("Emergencia")
+                
+        # --- ILUSTRACIONES ---
+        self.imagen_ayuda = hacer_imagen(RUTA_EMERGENCY_1,scaling=4)
         
-        # Mensajes iniciales
-        msg.showerror("ERROR GRAVE","Error en la computadora principal del satélite")
-        msg.showinfo("MODO DE OPERACIÓN","Se utilizará el modo de operación de emergencia\na cargo de la computadora hecha en UVG")
+        # label para poner imagen
+        self.muestra_imagenes : Label = Label(
+            self,bg=COLOR_FONDO_EMERGENCY,
+            image=self.imagen_ayuda, # La inicial
+            height=180
+        )
+        self.muestra_imagenes.pack()
         
         Label(
             self,
@@ -55,7 +64,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         ).pack(pady=2)
         
         self.muestra_mensajes : st.ScrolledText = st.ScrolledText(
-            self,width=63,height=13,
+            self,width=63,height=10,
             font=FONT_LETRITA_EMERGENCY
         )
         self.muestra_mensajes.pack(pady=2)
@@ -80,28 +89,34 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             self.cuanto_para_no_comms : int | None= cuanto_para_no_comms
         else:
             self.cuanto_para_no_comms = None
-            
+               
         # Las tareitas que se van a estar ejecutando
         tTomarFotos: Tarea = Tarea(
             prioridad=0,
             id="Intentando tomar fotos",
             estado="a",
             tiempo_restante=6_000,
-            tiempo_lleva=0
+            tiempo_lleva=0,
+            imagen=self.imagen_ayuda, # por ahora,
+            label_imagen=self.muestra_imagenes
         )
         tVerificarFotos: Tarea = Tarea(
             prioridad=1,
             id="Intentando verificar las fotos",
             estado="a",
             tiempo_restante=5_000,
-            tiempo_lleva=0
+            tiempo_lleva=0,
+            imagen=self.imagen_ayuda, # por ahora,
+            label_imagen=self.muestra_imagenes
         )
         tRevivirCompu : Tarea = Tarea(
             prioridad=1,
             id="Intentando revivir la computadora principal",
             estado="a",
             tiempo_restante=6_000,
-            tiempo_lleva=0
+            tiempo_lleva=0,
+            imagen=self.imagen_ayuda, # por ahora,
+            label_imagen=self.muestra_imagenes
         )
         
         # Comando y tarea deorbit
@@ -117,8 +132,15 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             id="Deorbitación del satélite",
             estado="a",
             tiempo_restante=10_000,
-            tiempo_lleva=0
+            tiempo_lleva=0,
+            imagen=self.imagen_ayuda, # por ahora,
+            label_imagen=self.muestra_imagenes
         )
+        
+        # Mensajes iniciales
+        # se muestran después de poner las cosas en la ventana
+        msg.showerror("ERROR GRAVE","Error en la computadora principal del satélite")
+        msg.showinfo("MODO DE OPERACIÓN","Se utilizará el modo de operación de emergencia\na cargo de la computadora hecha en UVG")
         
         # Las que van a pasar por el loopcito
         # El deorbit pasa sólo si lo mandan a hacer

@@ -23,6 +23,7 @@
 #       - Introductorias en el select
 
 import os
+from PIL import Image, ImageTk
 
 TICK = 1000 # Cuánto tarda cada tick en milisegundos
 ORBITA = 500.0 # inicial en kilómetros
@@ -70,6 +71,22 @@ RUTA_SATELITE_7_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_datos.p
 RUTA_SATELITE_1_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.png")
 RUTA_SATELITE_2_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
 RUTA_SATELITE_4_SELECT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
+
+RUTA_EMERGENCY_1 = os.path.join(CARPETA_ACTUAL, "emergency_help.jpg")
+
+def hacer_imagen (ruta:str,scaling:float)->ImageTk.PhotoImage:
+    # retorna la imagen con el tipo de dato y dimensiones correctas
+            
+    imagen_inicial = Image.open(ruta)
+    ancho, alto = imagen_inicial.size # obtener medidas para luego achiquitar la imagen
+    
+    #dividirlo entre el scaling factor ahi para que quede bien el tamaño
+    ancho = int(ancho//scaling) 
+    alto = int(alto//scaling)
+    imagen_nuevo_tamano = imagen_inicial.resize( #cambiar tamaño
+        (ancho,alto)
+    ) 
+    return ImageTk.PhotoImage(imagen_nuevo_tamano)
 
 def miliseg_a_seg(milisegundos:int)->str:
     # Toma un valor en milisegundos y lo convierte a segundos

@@ -51,7 +51,7 @@ from sim_rtos_constantes import FONT_LETRA_SCHEDULER,FONT_LETRITA_SCHEDULER
 from sim_rtos_constantes import FONT_BOTON_COMANDO,COLOR_BOTON_COMANDO
 from sim_rtos_constantes import COLOR_LETRA_BOTON_COMANDO,COLOR_LETRA_MENSAJE
 from sim_rtos_constantes import COLOR_BOTON_EMERGENCY, ORBITA # para el deorbit
-from sim_rtos_constantes import TICK, miliseg_a_seg
+from sim_rtos_constantes import TICK, miliseg_a_seg, hacer_imagen
 from sim_rtos_constantes import RUTA_SATELITE_1_SCHED, RUTA_SATELITE_2_SCHED
 from sim_rtos_constantes import RUTA_SATELITE_3_SCHED, RUTA_SATELITE_4_SCHED
 from sim_rtos_constantes import RUTA_SATELITE_5_SCHED, RUTA_SATELITE_6_SCHED
@@ -154,13 +154,13 @@ class Scheduler_Ventana(Tk):
         
         # - - - ILUSTRACIONES - - -
         
-        self.satelite_simple = self.imagen(RUTA_SATELITE_1_SCHED, scaling=3.5)
-        self.satelite_antenas = self.imagen(RUTA_SATELITE_2_SCHED, scaling=5.5)
-        self.satelite_camara = self.imagen(RUTA_SATELITE_3_SCHED, scaling=5.8)
-        self.satelite_deorbit = self.imagen(RUTA_SATELITE_4_SCHED, scaling=6.6)        
-        self.satelite_deorbit_fuego = self.imagen(RUTA_SATELITE_5_SCHED, scaling=9.2)
-        self.satelite_verifica = self.imagen(RUTA_SATELITE_6_SCHED, scaling=5.5)
-        self.satelite_datos = self.imagen(RUTA_SATELITE_7_SCHED,scaling=5.5)
+        self.satelite_simple = hacer_imagen(RUTA_SATELITE_1_SCHED, scaling=3.5)
+        self.satelite_antenas = hacer_imagen(RUTA_SATELITE_2_SCHED, scaling=5.5)
+        self.satelite_camara = hacer_imagen(RUTA_SATELITE_3_SCHED, scaling=5.8)
+        self.satelite_deorbit = hacer_imagen(RUTA_SATELITE_4_SCHED, scaling=6.6)        
+        self.satelite_deorbit_fuego = hacer_imagen(RUTA_SATELITE_5_SCHED, scaling=9.2)
+        self.satelite_verifica = hacer_imagen(RUTA_SATELITE_6_SCHED, scaling=5.5)
+        self.satelite_datos = hacer_imagen(RUTA_SATELITE_7_SCHED,scaling=5.5)
                 
         # Label para mostrar las ilustraciones
         self.muestra_imagenes : Label = Label(
@@ -230,21 +230,7 @@ class Scheduler_Ventana(Tk):
         self.emergencia = False # banderita de si estamos en emergencia
         self.tarea_actual = self.tIdle # Se inicia en la tarea de espera
         self.after(3*TICK,self.tick_tick_tick)
-    
-    def imagen (self,ruta:str,scaling:float)->ImageTk.PhotoImage:
-        # retorna la imagen con el tipo de dato y dimensiones correctas
-                
-        imagen_inicial = Image.open(ruta)
-        ancho, alto = imagen_inicial.size # obtener medidas para luego achiquitar la imagen
-        
-        #dividirlo entre el scaling factor ahi para que quede bien el tamaño
-        ancho = int(ancho//scaling) 
-        alto = int(alto//scaling)
-        imagen_nuevo_tamano = imagen_inicial.resize( #cambiar tamaño
-            (ancho,alto)
-        ) 
-        return ImageTk.PhotoImage(imagen_nuevo_tamano)
-    
+       
     def round_robin(self,tareas_listas:list[Tarea])->None:
         
         # Función para alternar entre tareas de la misma prioridad
