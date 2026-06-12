@@ -32,8 +32,8 @@ from PIL import Image, ImageTk
 from sim_rtos_constantes import COLOR_FONDO_SELECT,COLOR_LETRA_SELECT
 from sim_rtos_constantes import COLOR_LETRA_BOTON,COLOR_BOTON
 from sim_rtos_constantes import FONT_LETRA_SELECT,FONT_LETRITA_SELECT,COLOR_LETRITA_SELECT
-from sim_rtos_constantes import RUTA_SATELITE_1_SELECT, RUTA_SATELITE_2_SELECT
-from sim_rtos_constantes import RUTA_SATELITE_4_SELECT
+from sim_rtos_constantes import SELECT_ANTENAS, SELECT_SIMPLE, SELECT_DEORBIT
+from sim_rtos_constantes import hacer_imagen
 from sim_rtos_scheduler import Scheduler_Ventana
 
 class Seleccionador(Tk): 
@@ -212,37 +212,11 @@ class Seleccionador(Tk):
         ).grid(row=10,column=0,columnspan=2,padx=5,pady=5)
         
         # - - - ILUSTRACIONES - - -
+        self.satelite_simpleselect = hacer_imagen(SELECT_SIMPLE,scaling=2)
+        self.satelite_antenasselect = hacer_imagen(SELECT_ANTENAS,scaling=2)
+        self.deorbitselect = hacer_imagen(SELECT_DEORBIT,scaling=2)
         
-        satelite_simple = Image.open(RUTA_SATELITE_1_SELECT)
-        ancho, alto = satelite_simple.size # para hacer la imagen más pequeña
-        #dividirlo entre un factor ahi para que quede bien el tamaño
-        ancho = int(ancho//2) 
-        alto = int(alto//2)
-        satelite_simple_res = satelite_simple.resize( #cambiar tamaño
-            (ancho,alto)
-        ) 
-        self.satelite_simpleselect:ImageTk.PhotoImage=ImageTk.PhotoImage(satelite_simple_res)
-        
-        satelite_antenas = Image.open(RUTA_SATELITE_2_SELECT)
-        ancho, alto = satelite_antenas.size # para hacer la imagen más pequeña
-        #dividirlo entre un factor ahi para que quede bien el tamaño
-        ancho = int(ancho//2) 
-        alto = int(alto//2)
-        satelite_antenas_res = satelite_antenas.resize( #cambiar tamaño
-            (ancho,alto)
-        ) 
-        self.satelite_antenasselect:ImageTk.PhotoImage=ImageTk.PhotoImage(satelite_antenas_res)
-        
-        deorbit = Image.open(RUTA_SATELITE_4_SELECT)
-        ancho, alto = deorbit.size # para hacer la imagen más pequeña
-        #dividirlo entre un factor ahi para que quede bien el tamaño
-        ancho = int(ancho//2) 
-        alto = int(alto//2)
-        deorbit_res = deorbit.resize( #cambiar tamaño
-            (ancho,alto)
-        ) 
-        self.deorbitselect:ImageTk.PhotoImage=ImageTk.PhotoImage(deorbit_res)
-        
+        # Labels para poner imágenes
         Label(
             self,
             bg=COLOR_FONDO_SELECT,

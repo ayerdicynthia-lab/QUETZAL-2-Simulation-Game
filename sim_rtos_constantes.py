@@ -61,25 +61,25 @@ FONT_LETRITA_EMERGENCY = "Helvetica 16 bold"
 CARPETA_ACTUAL = os.path.dirname(__file__)
 
 # Ilustraciones - rutas con todo y carpeta para que sí las encuentre
-RUTA_SATELITE_1_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_simple.png")
-RUTA_SATELITE_2_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_antenas.png")
-RUTA_SATELITE_3_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_camara.png")
-RUTA_SATELITE_4_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit.png")
-RUTA_SATELITE_5_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit_fuego.png")
-RUTA_SATELITE_6_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_verificar.png")
-RUTA_SATELITE_7_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_datos.png")
-RUTA_SATELITE_8_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_antenas_fuego.png")
+SCHED_SIMPLE = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_simple.png")
+SCHED_ANTENAS = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_antenas.png")
+SCHED_CAMARA = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_camara.png")
+SCHED_DEORBIT = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit.png")
+SCHED_DEORBIT_FUEGO = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit_fuego.png")
+SCHED_VERIFICAR = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_verificar.png")
+SCHED_RECOLECTAR_DATOS = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_datos.png")
+SCHED_FUEGO = os.path.join(CARPETA_ACTUAL, "scheduler_antenas_fuego.png")
 
-RUTA_SATELITE_1_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.png")
-RUTA_SATELITE_2_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
-RUTA_SATELITE_4_SELECT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
+SELECT_SIMPLE = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.png")
+SELECT_ANTENAS = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
+SELECT_DEORBIT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
 
-RUTA_EMERGENCY_1 = os.path.join(CARPETA_ACTUAL, "emergency_help.png")
-RUTA_EMERGENCY_2 = os.path.join(CARPETA_ACTUAL, "emergency_camara.png")
-RUTA_EMERGENCY_3 = os.path.join(CARPETA_ACTUAL, "emergency_verificar.png")
-RUTA_EMERGENCY_4 = os.path.join(CARPETA_ACTUAL, "emergency_deorbit.png")
-RUTA_EMERGENCY_5 = os.path.join(CARPETA_ACTUAL, "emergency_deorbit_fuego.png")
-RUTA_EMERGENCY_6 = os.path.join(CARPETA_ACTUAL, "emergency_antenas_fuego.png")
+EMERGENCY_HELP = os.path.join(CARPETA_ACTUAL, "emergency_help.png")
+EMERGENCY_CAMARA = os.path.join(CARPETA_ACTUAL, "emergency_camara.png")
+EMERGENCY_VERIFICAR = os.path.join(CARPETA_ACTUAL, "emergency_verificar.png")
+EMERGENCY_DEORBIT = os.path.join(CARPETA_ACTUAL, "emergency_deorbit.png")
+EMERGENCY_DEORBIT_FUEGO = os.path.join(CARPETA_ACTUAL, "emergency_deorbit_fuego.png")
+EMERGENCY_FUEGO = os.path.join(CARPETA_ACTUAL, "emergency_antenas_fuego.png")
 
 def hacer_imagen (ruta:str,scaling:float)->ImageTk.PhotoImage:
     # retorna la imagen con el tipo de dato y dimensiones correctas

@@ -26,8 +26,9 @@ from random import randint
 from sim_rtos_constantes import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY, TICK
 from sim_rtos_constantes import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY, ORBITA
 from sim_rtos_constantes import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
-from sim_rtos_constantes import RUTA_EMERGENCY_1, RUTA_EMERGENCY_2, RUTA_EMERGENCY_3
-from sim_rtos_constantes import RUTA_EMERGENCY_4, RUTA_EMERGENCY_5, RUTA_EMERGENCY_6
+from sim_rtos_constantes import EMERGENCY_CAMARA, EMERGENCY_VERIFICAR
+from sim_rtos_constantes import EMERGENCY_DEORBIT, EMERGENCY_DEORBIT_FUEGO
+from sim_rtos_constantes import EMERGENCY_HELP, EMERGENCY_FUEGO
 from sim_rtos_constantes import hacer_imagen
 from sim_rtos_tarea import Tarea
 
@@ -47,12 +48,12 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         self.title("Emergencia")
                 
         # --- ILUSTRACIONES ---
-        self.imagen_ayuda = hacer_imagen(RUTA_EMERGENCY_1,scaling=5.8)
-        self.imagen_fotos = hacer_imagen(RUTA_EMERGENCY_2,scaling=5.8)
-        self.imagen_verificar = hacer_imagen(RUTA_EMERGENCY_3,scaling=5.8)
-        self.imagen_deorbit = hacer_imagen(RUTA_EMERGENCY_4,scaling=6.7)
-        self.imagen_deorbit_fuego = hacer_imagen(RUTA_EMERGENCY_5,scaling=8.8)
-        self.imagen_satelite_fuego = hacer_imagen(RUTA_EMERGENCY_6,scaling=6.8)
+        self.imagen_ayuda = hacer_imagen(EMERGENCY_HELP,scaling=5.8)
+        self.imagen_fotos = hacer_imagen(EMERGENCY_CAMARA,scaling=5.8)
+        self.imagen_verificar = hacer_imagen(EMERGENCY_VERIFICAR,scaling=5.8)
+        self.imagen_deorbit = hacer_imagen(EMERGENCY_DEORBIT,scaling=6.7)
+        self.imagen_deorbit_fuego = hacer_imagen(EMERGENCY_DEORBIT_FUEGO,scaling=8.8)
+        self.imagen_satelite_fuego = hacer_imagen(EMERGENCY_FUEGO,scaling=6.8)
         
         # label para poner imagen
         self.muestra_imagenes : Label = Label(

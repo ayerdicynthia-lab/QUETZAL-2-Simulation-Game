@@ -53,10 +53,9 @@ from sim_rtos_constantes import FONT_BOTON_COMANDO,COLOR_BOTON_COMANDO
 from sim_rtos_constantes import COLOR_LETRA_BOTON_COMANDO,COLOR_LETRA_MENSAJE
 from sim_rtos_constantes import COLOR_BOTON_EMERGENCY, ORBITA # para el deorbit
 from sim_rtos_constantes import TICK, miliseg_a_seg, hacer_imagen
-from sim_rtos_constantes import RUTA_SATELITE_1_SCHED, RUTA_SATELITE_2_SCHED
-from sim_rtos_constantes import RUTA_SATELITE_3_SCHED, RUTA_SATELITE_4_SCHED
-from sim_rtos_constantes import RUTA_SATELITE_5_SCHED, RUTA_SATELITE_6_SCHED
-from sim_rtos_constantes import RUTA_SATELITE_7_SCHED, RUTA_SATELITE_8_SCHED
+from sim_rtos_constantes import SCHED_SIMPLE, SCHED_ANTENAS, SCHED_FUEGO
+from sim_rtos_constantes import SCHED_CAMARA, SCHED_RECOLECTAR_DATOS, SCHED_VERIFICAR
+from sim_rtos_constantes import SCHED_DEORBIT, SCHED_DEORBIT_FUEGO
 from sim_rtos_tarea import Tarea
 from sim_rtos_pldobc_emergency import PLDOBC_EMERGENCY_CONTROL_MODE
         
@@ -155,14 +154,14 @@ class Scheduler_Ventana(Tk):
         
         # - - - ILUSTRACIONES - - -
         
-        self.satelite_simple = hacer_imagen(RUTA_SATELITE_1_SCHED, scaling=3.5)
-        self.satelite_antenas = hacer_imagen(RUTA_SATELITE_2_SCHED, scaling=5.5)
-        self.satelite_camara = hacer_imagen(RUTA_SATELITE_3_SCHED, scaling=5.8)
-        self.satelite_deorbit = hacer_imagen(RUTA_SATELITE_4_SCHED, scaling=6.6)        
-        self.satelite_deorbit_fuego = hacer_imagen(RUTA_SATELITE_5_SCHED, scaling=9.2)
-        self.satelite_verifica = hacer_imagen(RUTA_SATELITE_6_SCHED, scaling=5.5)
-        self.satelite_datos = hacer_imagen(RUTA_SATELITE_7_SCHED,scaling=5.5)
-        self.satelite_fuego = hacer_imagen(RUTA_SATELITE_8_SCHED,scaling=7)
+        self.satelite_simple = hacer_imagen(SCHED_SIMPLE, scaling=3.5)
+        self.satelite_antenas = hacer_imagen(SCHED_ANTENAS, scaling=5.5)
+        self.satelite_camara = hacer_imagen(SCHED_CAMARA, scaling=5.8)
+        self.satelite_deorbit = hacer_imagen(SCHED_DEORBIT, scaling=6.6)        
+        self.satelite_deorbit_fuego = hacer_imagen(SCHED_DEORBIT_FUEGO, scaling=9.2)
+        self.satelite_verifica = hacer_imagen(SCHED_VERIFICAR, scaling=5.5)
+        self.satelite_datos = hacer_imagen(SCHED_RECOLECTAR_DATOS,scaling=5.5)
+        self.satelite_fuego = hacer_imagen(SCHED_FUEGO,scaling=7)
                 
         # Label para mostrar las ilustraciones
         self.muestra_imagenes : Label = Label(
