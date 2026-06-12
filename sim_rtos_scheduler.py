@@ -37,9 +37,10 @@
 #         y que se deorbite así sin el mecanismo (proceso más lento)
 #   Imágenes para operaciones nominales: 11.6.26
 #       - para cada tarea
+#   Imágenes para CRASH MODE: 12.6.26
 # AJUSTES PENDIENTES:
 #   - el label de arriba ya no muestre comando, que muestre modo de operación
-#   - tipo modo de operación nominal, modo de operación payload1...
+#     tipo modo de operación nominal, modo de operación payload1...
 
 from tkinter import Tk, Label, Button
 from tkinter import scrolledtext as st, Frame, messagebox as msg
@@ -55,7 +56,7 @@ from sim_rtos_constantes import TICK, miliseg_a_seg, hacer_imagen
 from sim_rtos_constantes import RUTA_SATELITE_1_SCHED, RUTA_SATELITE_2_SCHED
 from sim_rtos_constantes import RUTA_SATELITE_3_SCHED, RUTA_SATELITE_4_SCHED
 from sim_rtos_constantes import RUTA_SATELITE_5_SCHED, RUTA_SATELITE_6_SCHED
-from sim_rtos_constantes import RUTA_SATELITE_7_SCHED
+from sim_rtos_constantes import RUTA_SATELITE_7_SCHED, RUTA_SATELITE_8_SCHED
 from sim_rtos_tarea import Tarea
 from sim_rtos_pldobc_emergency import PLDOBC_EMERGENCY_CONTROL_MODE
         
@@ -161,6 +162,7 @@ class Scheduler_Ventana(Tk):
         self.satelite_deorbit_fuego = hacer_imagen(RUTA_SATELITE_5_SCHED, scaling=9.2)
         self.satelite_verifica = hacer_imagen(RUTA_SATELITE_6_SCHED, scaling=5.5)
         self.satelite_datos = hacer_imagen(RUTA_SATELITE_7_SCHED,scaling=5.5)
+        self.satelite_fuego = hacer_imagen(RUTA_SATELITE_8_SCHED,scaling=7)
                 
         # Label para mostrar las ilustraciones
         self.muestra_imagenes : Label = Label(
@@ -282,8 +284,8 @@ class Scheduler_Ventana(Tk):
         if not respuesta:
             return
         
-        #1 de cada 4 no funciona
-        posibilidad = randint(1,4)
+        #1 de cada 3 no funciona
+        posibilidad = randint(1,3)
         if posibilidad==1:
             #Ingreso a crash mode
             
@@ -376,8 +378,15 @@ class Scheduler_Ventana(Tk):
             mensaje = f"El satélite se ha deorbitado exitosamente"
             self.cerrar_ventana=True # Ahora se cerrará en la siguiente
         else:
-            if self.orbita<=300:
+            if self.orbita<=300 and self.intentos_para_revivir<=20:
                 self.tDeorbit.imagen = self.satelite_deorbit_fuego 
+            
+            # casos de shut down en crash mode
+            if self.intentos_para_revivir>20 and self.orbita>300:
+                self.tDeorbit.imagen = self.satelite_antenas # se deorbita sin mecanismo deorbit
+                
+            if self.intentos_para_revivir>20 and self.orbita<= 300:
+                self.tDeorbit.imagen = self.satelite_fuego #se quema el satélite solito
             
             self.tDeorbit.ejecutar()
             # Ir decrementando la órbita cada tick

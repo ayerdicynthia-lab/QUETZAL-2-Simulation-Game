@@ -19,13 +19,15 @@
 #       - Mande mensajes diciendo "cómo está", pidiendo ayuda
 #   Crash mode: 5.6.26
 #       - No funciona el despliegue del deorbit en el no comms
+#   Imágenes: 12.6.26
 
 from tkinter import Toplevel, Label, messagebox as msg, Button, scrolledtext as st
 from random import randint
 from sim_rtos_constantes import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY, TICK
 from sim_rtos_constantes import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY, ORBITA
 from sim_rtos_constantes import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
-from sim_rtos_constantes import RUTA_EMERGENCY_1
+from sim_rtos_constantes import RUTA_EMERGENCY_1, RUTA_EMERGENCY_2, RUTA_EMERGENCY_3
+from sim_rtos_constantes import RUTA_EMERGENCY_4, RUTA_EMERGENCY_5, RUTA_EMERGENCY_6
 from sim_rtos_constantes import hacer_imagen
 from sim_rtos_tarea import Tarea
 
@@ -46,6 +48,11 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
                 
         # --- ILUSTRACIONES ---
         self.imagen_ayuda = hacer_imagen(RUTA_EMERGENCY_1,scaling=5.8)
+        self.imagen_fotos = hacer_imagen(RUTA_EMERGENCY_2,scaling=5.8)
+        self.imagen_verificar = hacer_imagen(RUTA_EMERGENCY_3,scaling=5.8)
+        self.imagen_deorbit = hacer_imagen(RUTA_EMERGENCY_4,scaling=6.7)
+        self.imagen_deorbit_fuego = hacer_imagen(RUTA_EMERGENCY_5,scaling=8.8)
+        self.imagen_satelite_fuego = hacer_imagen(RUTA_EMERGENCY_6,scaling=6.8)
         
         # label para poner imagen
         self.muestra_imagenes : Label = Label(
@@ -97,7 +104,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             estado="a",
             tiempo_restante=6_000,
             tiempo_lleva=0,
-            imagen=self.imagen_ayuda, # por ahora,
+            imagen=self.imagen_fotos,
             label_imagen=self.muestra_imagenes
         )
         tVerificarFotos: Tarea = Tarea(
@@ -106,7 +113,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             estado="a",
             tiempo_restante=5_000,
             tiempo_lleva=0,
-            imagen=self.imagen_ayuda, # por ahora,
+            imagen=self.imagen_verificar,
             label_imagen=self.muestra_imagenes
         )
         tRevivirCompu : Tarea = Tarea(
@@ -133,7 +140,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             estado="a",
             tiempo_restante=10_000,
             tiempo_lleva=0,
-            imagen=self.imagen_ayuda, # por ahora,
+            imagen=self.imagen_deorbit,
             label_imagen=self.muestra_imagenes
         )
         
@@ -213,7 +220,19 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             # Tarea finalizada
             mensaje = f"El satélite se ha deorbitado exitosamente"
             self.cerrar_ventana=True # Ahora se cerrará en la siguiente
+                       
         else:
+            
+            if self.orbita <= 300 and self.intentos_para_revivir<=20: # se usa el mecanismo normal
+                self.tDeorbit.imagen = self.imagen_deorbit_fuego
+                
+            # casos de shut down en crash mode
+            if self.intentos_para_revivir>20 and self.orbita>300:
+                self.tDeorbit.imagen = self.imagen_ayuda # se deorbita sin mecanismo deorbit
+                
+            if self.intentos_para_revivir>20 and self.orbita<= 300:
+                self.tDeorbit.imagen = self.imagen_satelite_fuego #se quema el satélite solito
+            
             self.tDeorbit.ejecutar()
             # Ir decrementando la órbita cada tick
             
@@ -232,6 +251,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
     def informar_que_esta_mal(self):
         mensaje = f"AYUDA: La computadora principal no ha funcionado por {self.tiempo//1000} segundos"
         self.meter_mensaje(mensaje,self.muestra_mensajes)
+        self.muestra_imagenes.config(image=self.imagen_ayuda) # para que la muestre en ese tick
         
     def ofuscar(self,mensaje:str)->str:
         lista_caracteres_mensaje = list(mensaje)

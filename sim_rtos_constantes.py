@@ -21,6 +21,7 @@
 #   Rutas de imagenes: 11.6.26
 #       - Operaciones nominales del scheduler
 #       - Introductorias en el select
+#   Rutas de imagenes emergencia: 12.6.26
 
 import os
 from PIL import Image, ImageTk
@@ -50,7 +51,7 @@ FONT_LETRITA_SELECT = "Arial 16 bold"
 COLOR_LETRITA_SELECT = "#32347B"
 
 # Constantes de colores y fonts del cosito de emergencia
-COLOR_FONDO_EMERGENCY = "#F72128"
+COLOR_FONDO_EMERGENCY = "#F26A6E"
 COLOR_LETRA_EMERGENCY = "#530407"
 COLOR_BOTON_EMERGENCY = "#302929"
 FONT_LETRA_EMERGENCY = "Helvetica 20 bold"
@@ -67,12 +68,18 @@ RUTA_SATELITE_4_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit
 RUTA_SATELITE_5_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit_fuego.png")
 RUTA_SATELITE_6_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_verificar.png")
 RUTA_SATELITE_7_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_datos.png")
+RUTA_SATELITE_8_SCHED = os.path.join(CARPETA_ACTUAL, "scheduler_antenas_fuego.png")
 
 RUTA_SATELITE_1_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.png")
 RUTA_SATELITE_2_SELECT = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
 RUTA_SATELITE_4_SELECT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
 
 RUTA_EMERGENCY_1 = os.path.join(CARPETA_ACTUAL, "emergency_help.png")
+RUTA_EMERGENCY_2 = os.path.join(CARPETA_ACTUAL, "emergency_camara.png")
+RUTA_EMERGENCY_3 = os.path.join(CARPETA_ACTUAL, "emergency_verificar.png")
+RUTA_EMERGENCY_4 = os.path.join(CARPETA_ACTUAL, "emergency_deorbit.png")
+RUTA_EMERGENCY_5 = os.path.join(CARPETA_ACTUAL, "emergency_deorbit_fuego.png")
+RUTA_EMERGENCY_6 = os.path.join(CARPETA_ACTUAL, "emergency_antenas_fuego.png")
 
 def hacer_imagen (ruta:str,scaling:float)->ImageTk.PhotoImage:
     # retorna la imagen con el tipo de dato y dimensiones correctas
