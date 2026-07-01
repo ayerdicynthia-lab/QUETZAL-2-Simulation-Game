@@ -26,6 +26,7 @@
 #       - Se muestra el tiempo en segundos
 #   Atributo de imagen: 5.6.26
 #       - También se recibe un label en donde se muestra esa imagen
+#   Atributo de modo de operación: 1.7.26
 
 from constantes import TICK, miliseg_a_seg
 from PIL import ImageTk

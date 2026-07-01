@@ -38,9 +38,9 @@
 #   Imágenes para operaciones nominales: 11.6.26
 #       - para cada tarea
 #   Imágenes para CRASH MODE: 12.6.26
-# AJUSTES PENDIENTES:
-#   - el label de arriba ya no muestre comando, que muestre modo de operación
-#     tipo modo de operación nominal, modo de operación payload1...
+#   Modos de operación: 1.7.26
+#   - El label de arriba ya no muestra el mismo comando, sino muestra el modo de operación
+#     según la tarea.
 
 from tkinter import Tk, Label, Button
 from tkinter import scrolledtext as st, Frame, messagebox as msg
