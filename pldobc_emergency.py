@@ -23,6 +23,7 @@
 #   Arreglar bug: 1.7.26
 #       - Mostrar imágenes en el deorbit
 
+
 from tkinter import Toplevel, Label, messagebox as msg, Button, scrolledtext as st
 from random import randint
 from constantes import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY, TICK
@@ -108,7 +109,8 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             tiempo_restante=6_000,
             tiempo_lleva=0,
             imagen=self.imagen_fotos,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE FALLO DE OBC"
         )
         tVerificarFotos: Tarea = Tarea(
             prioridad=1,
@@ -117,7 +119,8 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             tiempo_restante=5_000,
             tiempo_lleva=0,
             imagen=self.imagen_verificar,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE FALLO DE OBC"
         )
         tRevivirCompu : Tarea = Tarea(
             prioridad=1,
@@ -126,7 +129,8 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             tiempo_restante=6_000,
             tiempo_lleva=0,
             imagen=self.imagen_ayuda, # por ahora,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE FALLO DE OBC"
         )
         
         # Comando y tarea deorbit
@@ -144,7 +148,8 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             tiempo_restante=10_000,
             tiempo_lleva=0,
             imagen=self.imagen_deorbit,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE DEORBIT EN FALLO DE OBC"
         )
         
         # Mensajes iniciales

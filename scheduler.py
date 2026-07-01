@@ -375,8 +375,10 @@ class Scheduler_Ventana(Tk):
             # Hasta en esta siguiente vuelta se va a cerrar
             self.destroy() 
             return
-               
-        mensaje = "" #Inicializarlo por si acaso
+         
+        #Inicializarlos por si acaso       
+        mensaje = ""
+        mensaje_modo = ""
         if self.orbita<=0:
             # Tarea finalizada
             mensaje = f"El satélite se ha deorbitado exitosamente"
@@ -384,13 +386,16 @@ class Scheduler_Ventana(Tk):
         else:
             if self.orbita<=300 and self.intentos_para_revivir<=20:
                 self.tDeorbit.imagen = self.satelite_deorbit_fuego 
+                mensaje_modo = self.tDeorbit.modo_operacion
             
             # casos de shut down en crash mode
             if self.intentos_para_revivir>20 and self.orbita>300:
                 self.tDeorbit.imagen = self.satelite_antenas # se deorbita sin mecanismo deorbit
+                mensaje_modo="CRASH MODE !!"
                 
             if self.intentos_para_revivir>20 and self.orbita<= 300:
                 self.tDeorbit.imagen = self.satelite_fuego #se quema el satélite solito
+                mensaje_modo="CRASH MODE !!"
             
             self.tDeorbit.ejecutar()
             # Ir decrementando la órbita cada tick
@@ -401,7 +406,7 @@ class Scheduler_Ventana(Tk):
             
             mensaje = f"Deorbitando satélite... Órbita de {self.orbita} km"
             
-        self.actual_mensaje['text']=mensaje
+        self.actual_mensaje['text']= mensaje_modo
         self.meter_mensaje(mensaje,donde=self.mensajes_anteriores)
         self.after(TICK,self.loop_deorbitar)
        
