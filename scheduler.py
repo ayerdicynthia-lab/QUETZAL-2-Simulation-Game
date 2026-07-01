@@ -98,7 +98,7 @@ class Scheduler_Ventana(Tk):
         
         self.actual_mensaje = Label(
             contenedor,bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_MENSAJE,
-            font=FONT_LETRITA_SCHEDULER,text="Desplegando antenas..."
+            font=FONT_LETRITA_SCHEDULER,text="MODO DE OPERACIÓN DE ARRANQUE"
         )
         self.actual_mensaje.grid(column=0,row=2,columnspan=4,pady=2)
         
@@ -123,13 +123,13 @@ class Scheduler_Ventana(Tk):
         ).grid(column=0,row=5,columnspan=4,pady=2)
         
         # Botones para enviar comandos
-        self.boton_recolectar = Button(
-            contenedor,text="RECOLECTAR DATOS",
+        self.boton_enviar = Button(
+            contenedor,text="ENVIAR DATOS",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
             font=FONT_BOTON_COMANDO, width=20,
-            command=self.comando_recolectar_datos
+            command=self.comando_enviar_datos
         )
-        self.boton_recolectar.grid(column=0,row=6,padx=4,pady=2)
+        self.boton_enviar.grid(column=0,row=6,padx=4,pady=2)
         self.boton_tomar_fotos = Button(
             contenedor,text="TOMAR FOTOS",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
@@ -171,25 +171,28 @@ class Scheduler_Ventana(Tk):
         self.muestra_imagenes.place(x=15,y=10)
         
         # Guardar las tareas con la información enviada en los parámetros
-        self.tRecoleccion : Tarea = Tarea(
+        self.tEnviar : Tarea = Tarea(
             prioridad=prioridad_recoleccion,
-            id="Recolectar datos del funcionamiento del satélite",
+            id="Enviar datos del satélite a colegios",
             estado="Blocked",tiempo_restante=duracion_recoleccion,tiempo_lleva=0,
-            imagen=self.satelite_datos,label_imagen=self.muestra_imagenes
+            imagen=self.satelite_datos,label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE PLD2: LORA"
         )
         self.tCaptura : Tarea = Tarea(
             prioridad=prioridad_capturar,id="Tomar fotos de Guatemala",
             estado="Blocked",tiempo_restante=duracion_capturar,tiempo_lleva=0,
-            imagen=self.satelite_camara,label_imagen=self.muestra_imagenes
+            imagen=self.satelite_camara,label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE PLD1: MILO"
         )
         self.tVerifica : Tarea = Tarea(
             prioridad=prioridad_verificar,id="Verificar que las fotos no tengan nubes",
             estado="Blocked",tiempo_restante=duracion_verificar,tiempo_lleva=0,
-            imagen=self.satelite_verifica,label_imagen=self.muestra_imagenes
+            imagen=self.satelite_verifica,label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE PLD1: MILO"
         )
         
         # Guardar el tiempo que toma cada tarea para volver lo a usar
-        self.tiempo_recoleccion : int = self.tRecoleccion.tiempo_restante
+        self.tiempo_recoleccion : int = self.tEnviar.tiempo_restante
         self.tiempo_captura : int = self.tCaptura.tiempo_restante
         self.tiempo_verifica : int= self.tVerifica.tiempo_restante
         
@@ -208,7 +211,8 @@ class Scheduler_Ventana(Tk):
             tiempo_restante=1_000_000, # Truquito: prácticamente que nunca se acaba
             tiempo_lleva=0,
             imagen=self.satelite_antenas,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN NOMINAL: Esperando comandos"
         )
         self.tDeorbit : Tarea = Tarea(
             prioridad=30,
@@ -217,11 +221,12 @@ class Scheduler_Ventana(Tk):
             tiempo_restante=10_000,
             tiempo_lleva=0,
             imagen=self.satelite_deorbit,
-            label_imagen=self.muestra_imagenes
+            label_imagen=self.muestra_imagenes,
+            modo_operacion="MODO DE OPERACIÓN DE PLD3: DEORBIT"
         )
         
         # Lista de todas las tareas que hay para hacer
-        self.tareas = [self.tRecoleccion,self.tCaptura,self.tIdle,self.tVerifica]
+        self.tareas = [self.tEnviar,self.tCaptura,self.tIdle,self.tVerifica]
         
         # Para la deorbitación del satélite
         self.cerrar_ventana = False
@@ -400,9 +405,9 @@ class Scheduler_Ventana(Tk):
         self.meter_mensaje(mensaje,donde=self.mensajes_anteriores)
         self.after(TICK,self.loop_deorbitar)
        
-    def comando_recolectar_datos(self)->None:
+    def comando_enviar_datos(self)->None:
         self.emergencia_aleatoria() # en cada comando se ve si habrá emergencia pseudoaleatoria   
-        self.comandan(tarea=self.tRecoleccion,tiempo=self.tiempo_recoleccion)
+        self.comandan(tarea=self.tEnviar,tiempo=self.tiempo_recoleccion)
         
     def comando_tomar_fotos(self)->None:
         self.emergencia_aleatoria()
@@ -481,7 +486,7 @@ class Scheduler_Ventana(Tk):
             #desactivar botones
             self.boton_verificar_fotos.config(state="disabled")
             self.boton_tomar_fotos.config(state="disabled")
-            self.boton_recolectar.config(state="disabled")
+            self.boton_enviar.config(state="disabled")
             self.boton_deorbit.config(state="disabled")
             return
         
@@ -510,21 +515,22 @@ class Scheduler_Ventana(Tk):
         elif len(tareas_de_mayor_prioridad)>1: # Round robin como hay varias con la misma prioridad.
             self.round_robin(tareas_de_mayor_prioridad)
         
-        # Guarda el mensaje anterior en el historial        
-        self.meter_mensaje(mensaje=self.actual_mensaje['text'],donde=self.mensajes_anteriores) 
-        
-        # Actualiza el mensajito actual
-        # Ejecutar tarea mostrando cuánto tiempo se lleva ejecutando
-        mensaje = self.tarea_actual.ejecutar() 
-        self.actual_mensaje['text'] = mensaje
-        
+        # Guarda el mensaje de ejecución en el historial      
         if self.ya_finalizo(self.tarea_actual): # Si ya terminó la tarea
             tiempo_seg = miliseg_a_seg(self.tarea_actual.tiempo_lleva)
-            self.actual_mensaje['text']=f"{self.tarea_actual.id} ha finalizado en {tiempo_seg}"
+            mensaje=f"{self.tarea_actual.id} ha finalizado en {tiempo_seg}"
+        else:
+            mensaje = self.tarea_actual.ejecutar()
+            
+        self.meter_mensaje(mensaje=mensaje,donde=self.mensajes_anteriores) 
+        
+        # Actualiza el modo de operación que aparece arriba
+        self.actual_mensaje['text'] = self.tarea_actual.modo_operacion 
+        
             
         # Para evitar spam, se desactivan los botones si la tarea ya está corriendo o en cola
-        self.boton_recolectar.config(
-            state="disabled" if self.tRecoleccion.estado in ["Ready", "Running"]
+        self.boton_enviar.config(
+            state="disabled" if self.tEnviar.estado in ["Ready", "Running"]
             else "normal"
         )
         self.boton_tomar_fotos.config(

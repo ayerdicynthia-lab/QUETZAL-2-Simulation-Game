@@ -37,9 +37,10 @@ class Tarea():
                  id:str,
                  estado:str,
                  tiempo_restante:int, # En milisegundos
-                 tiempo_lleva:int,
+                 tiempo_lleva:int, # En milisegundos
                  imagen:ImageTk.PhotoImage,
-                 label_imagen:Label): # En milisegundos
+                 modo_operacion : str,
+                 label_imagen:Label): 
         
         # Guardar los parámetros como variables de la clase para usarlos después
         self.prioridad = prioridad
@@ -49,6 +50,7 @@ class Tarea():
         self.tiempo_lleva = tiempo_lleva
         self.imagen=imagen
         self.label_imagen = label_imagen  
+        self.modo_operacion = modo_operacion
         
     def ejecutar(self)->str:  
         
