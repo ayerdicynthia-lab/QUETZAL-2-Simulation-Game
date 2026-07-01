@@ -26,13 +26,14 @@
 
 from tkinter import Toplevel, Label, messagebox as msg, Button, scrolledtext as st
 from random import randint
-from constantes import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY, TICK
-from constantes import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY, ORBITA
-from constantes import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
-from constantes import EMERGENCY_CAMARA, EMERGENCY_VERIFICAR
-from constantes import EMERGENCY_DEORBIT, EMERGENCY_DEORBIT_FUEGO
-from constantes import EMERGENCY_HELP, EMERGENCY_FUEGO
-from constantes import hacer_imagen
+from constantes import TICK, ORBITA
+from formato import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY
+from formato import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY
+from formato import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
+from rutas_imagenes import EMERGENCY_CAMARA, EMERGENCY_VERIFICAR
+from rutas_imagenes import EMERGENCY_DEORBIT, EMERGENCY_DEORBIT_FUEGO
+from rutas_imagenes import EMERGENCY_HELP, EMERGENCY_FUEGO
+from rutas_imagenes import hacer_imagen
 from clase_tarea import Tarea
 
 class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abrirá

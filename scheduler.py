@@ -44,18 +44,18 @@
 
 from tkinter import Tk, Label, Button
 from tkinter import scrolledtext as st, Frame, messagebox as msg
-from PIL import Image, ImageTk
 from random import randint
-from constantes import COLOR_FONDO_SCHEDULER,COLOR_LETRA_SCHEDULER
-from constantes import COLOR_BOTON,COLOR_LETRA_BOTON
-from constantes import FONT_LETRA_SCHEDULER,FONT_LETRITA_SCHEDULER
-from constantes import FONT_BOTON_COMANDO,COLOR_BOTON_COMANDO
-from constantes import COLOR_LETRA_BOTON_COMANDO,COLOR_LETRA_MENSAJE
-from constantes import COLOR_BOTON_EMERGENCY, ORBITA # para el deorbit
-from constantes import TICK, miliseg_a_seg, hacer_imagen
-from constantes import SCHED_SIMPLE, SCHED_ANTENAS, SCHED_FUEGO
-from constantes import SCHED_CAMARA, SCHED_RECOLECTAR_DATOS, SCHED_VERIFICAR
-from constantes import SCHED_DEORBIT, SCHED_DEORBIT_FUEGO
+from constantes import TICK, ORBITA, miliseg_a_seg
+from formato import COLOR_FONDO_SCHEDULER,COLOR_LETRA_SCHEDULER
+from formato import COLOR_BOTON,COLOR_LETRA_BOTON
+from formato import FONT_LETRA_SCHEDULER,FONT_LETRITA_SCHEDULER
+from formato import FONT_BOTON_COMANDO,COLOR_BOTON_COMANDO
+from formato import COLOR_LETRA_BOTON_COMANDO,COLOR_LETRA_MENSAJE
+from formato import COLOR_BOTON_EMERGENCY
+from rutas_imagenes import hacer_imagen
+from rutas_imagenes import SCHED_SIMPLE, SCHED_ANTENAS, SCHED_FUEGO
+from rutas_imagenes import SCHED_CAMARA, SCHED_RECOLECTAR_DATOS, SCHED_VERIFICAR
+from rutas_imagenes import SCHED_DEORBIT, SCHED_DEORBIT_FUEGO
 from clase_tarea import Tarea
 from pldobc_emergency import PLDOBC_EMERGENCY_CONTROL_MODE
         

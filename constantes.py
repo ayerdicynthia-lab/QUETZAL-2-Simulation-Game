@@ -23,83 +23,10 @@
 #       - Introductorias en el select
 #   Rutas de imagenes emergencia: 12.6.26
 #   Color y font de ventana acerca de: 1.7.26
-
-import os
-from PIL import Image, ImageTk
+#   Pasar formato y rutas de imágenes a otro archivo: 1.7.26
 
 TICK = 1000 # Cuánto tarda cada tick en milisegundos
 ORBITA = 500.0 # inicial en kilómetros
-
-# Constantes de colores usados en el seleccionador y en el scheduler
-COLOR_BOTON = "#B01414"
-COLOR_LETRA_BOTON = "#F3EDED"
-
-# Constantes de colores y fonts del scheduler
-COLOR_FONDO_SCHEDULER = "#e3ecf7"
-COLOR_LETRA_SCHEDULER = "#111262"
-FONT_LETRA_SCHEDULER = "Calibri 28 bold"
-FONT_LETRITA_SCHEDULER = "Calibri 18 bold"
-COLOR_BOTON_COMANDO = "#1C6909"
-COLOR_LETRA_BOTON_COMANDO = "#DAEDC5"
-FONT_BOTON_COMANDO = "Helvetica 18 bold"
-COLOR_LETRA_MENSAJE = "#0E5C48"
-
-# Constantes de colores y fonts del seleccionador
-COLOR_FONDO_SELECT = "#A0F1D5"
-COLOR_LETRA_SELECT = "#040632"
-FONT_LETRA_SELECT = "Arial 20 bold"
-FONT_LETRITA_SELECT = "Arial 16 bold"
-COLOR_LETRITA_SELECT = "#32347B"
-
-# Constantes de colores y fonts del cosito de emergencia
-COLOR_FONDO_EMERGENCY = "#F26A6E"
-COLOR_LETRA_EMERGENCY = "#530407"
-COLOR_BOTON_EMERGENCY = "#302929"
-FONT_LETRA_EMERGENCY = "Helvetica 20 bold"
-FONT_LETRITA_EMERGENCY = "Helvetica 16 bold"
-
-# Constantes de colores y fonts de la ventana de acerca de
-COLOR_FONDO_ACERCADE = "#8AB7F5"
-COLOR_LETRA_ACERCADE = "#103A61"
-FONT_LETRA_ACERCADE = "Helvetica 18 bold"
-
-# Ruta a la carpeta de este archivo
-CARPETA_ACTUAL = os.path.dirname(__file__)
-
-# Ilustraciones - rutas con todo y carpeta para que sí las encuentre
-SCHED_SIMPLE = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_simple.png")
-SCHED_ANTENAS = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_antenas.png")
-SCHED_CAMARA = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_camara.png")
-SCHED_DEORBIT = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit.png")
-SCHED_DEORBIT_FUEGO = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_deorbit_fuego.png")
-SCHED_VERIFICAR = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_verificar.png")
-SCHED_RECOLECTAR_DATOS = os.path.join(CARPETA_ACTUAL, "scheduler_quetzal2_datos.png")
-SCHED_FUEGO = os.path.join(CARPETA_ACTUAL, "scheduler_antenas_fuego.png")
-
-SELECT_SIMPLE = os.path.join(CARPETA_ACTUAL, "select_quetzal2_simple.png")
-SELECT_ANTENAS = os.path.join(CARPETA_ACTUAL, "select_quetzal2_antenas.png")
-SELECT_DEORBIT = os.path.join(CARPETA_ACTUAL, "select_deorbit_fuego.png")
-
-EMERGENCY_HELP = os.path.join(CARPETA_ACTUAL, "emergency_help.png")
-EMERGENCY_CAMARA = os.path.join(CARPETA_ACTUAL, "emergency_camara.png")
-EMERGENCY_VERIFICAR = os.path.join(CARPETA_ACTUAL, "emergency_verificar.png")
-EMERGENCY_DEORBIT = os.path.join(CARPETA_ACTUAL, "emergency_deorbit.png")
-EMERGENCY_DEORBIT_FUEGO = os.path.join(CARPETA_ACTUAL, "emergency_deorbit_fuego.png")
-EMERGENCY_FUEGO = os.path.join(CARPETA_ACTUAL, "emergency_antenas_fuego.png")
-
-def hacer_imagen (ruta:str,scaling:float)->ImageTk.PhotoImage:
-    # retorna la imagen con el tipo de dato y dimensiones correctas
-            
-    imagen_inicial = Image.open(ruta)
-    ancho, alto = imagen_inicial.size # obtener medidas para luego achiquitar la imagen
-    
-    #dividirlo entre el scaling factor ahi para que quede bien el tamaño
-    ancho = int(ancho//scaling) 
-    alto = int(alto//scaling)
-    imagen_nuevo_tamano = imagen_inicial.resize( #cambiar tamaño
-        (ancho,alto)
-    ) 
-    return ImageTk.PhotoImage(imagen_nuevo_tamano)
 
 def miliseg_a_seg(milisegundos:int)->str:
     # Toma un valor en milisegundos y lo convierte a segundos

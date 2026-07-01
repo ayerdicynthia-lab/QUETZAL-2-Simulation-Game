@@ -28,11 +28,11 @@
 #       - Mostrarlo como una ventana Toplevel
 
 from tkinter import Tk, Button, Label, Spinbox, Frame, IntVar, messagebox as msg
-from constantes import COLOR_FONDO_SELECT,COLOR_LETRA_SELECT
-from constantes import COLOR_LETRA_BOTON,COLOR_BOTON
-from constantes import FONT_LETRA_SELECT,FONT_LETRITA_SELECT,COLOR_LETRITA_SELECT
-from constantes import SELECT_ANTENAS, SELECT_SIMPLE, SELECT_DEORBIT
-from constantes import hacer_imagen
+from formato import COLOR_FONDO_SELECT,COLOR_LETRA_SELECT
+from formato import COLOR_LETRA_BOTON,COLOR_BOTON
+from formato import FONT_LETRA_SELECT,FONT_LETRITA_SELECT,COLOR_LETRITA_SELECT
+from rutas_imagenes import SELECT_ANTENAS, SELECT_SIMPLE, SELECT_DEORBIT
+from rutas_imagenes import hacer_imagen
 from scheduler import Scheduler_Ventana
 from autores import Autores
 
