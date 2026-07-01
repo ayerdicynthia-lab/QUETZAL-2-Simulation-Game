@@ -20,6 +20,8 @@
 #   Crash mode: 5.6.26
 #       - No funciona el despliegue del deorbit en el no comms
 #   Imágenes: 12.6.26
+#   Arreglar bug: 1.7.26
+#       - Mostrar imágenes en el deorbit
 
 from tkinter import Toplevel, Label, messagebox as msg, Button, scrolledtext as st
 from random import randint
@@ -192,7 +194,14 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         
         self.boton_deorbit.config(state="disabled") # para que no lo spamee
         self.esta_deorbitando = True
-        self.after(TICK,self.loop_deorbitar)
+        
+        # Si está en crash mode, primero intentar revivir el mecanismo
+        if self.intentos_para_revivir > 20:
+            self.intento_actual = 1
+            self.after(TICK,self.loop_deorbitar_fallo)
+        else:
+            # Si está en modo normal, deorbitar directamente
+            self.after(TICK,self.loop_deorbitar)
         
     def decremento_deorbit(self)->int:
         # Ver en cuánto debe irse decrementando la órbita cada tick dependiendo
@@ -227,11 +236,13 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
             if self.orbita <= 300 and self.intentos_para_revivir<=20: # se usa el mecanismo normal
                 self.tDeorbit.imagen = self.imagen_deorbit_fuego
                 
-            # casos de shut down en crash mode
-            if self.intentos_para_revivir>20 and self.orbita>300:
+            elif self.orbita > 300 and self.intentos_para_revivir<=20: # deorbit normal sin mecanismo desplegado
+                self.tDeorbit.imagen = self.imagen_deorbit
+                
+            elif self.intentos_para_revivir>20 and self.orbita>300: # casos de shut down en crash mode
                 self.tDeorbit.imagen = self.imagen_ayuda # se deorbita sin mecanismo deorbit
                 
-            if self.intentos_para_revivir>20 and self.orbita<= 300:
+            elif self.intentos_para_revivir>20 and self.orbita<= 300:
                 self.tDeorbit.imagen = self.imagen_satelite_fuego #se quema el satélite solito
             
             self.tDeorbit.ejecutar()
@@ -350,6 +361,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
     
     def loop_deorbitar_fallo(self):
         # crash mode
+        self.muestra_imagenes.config(image=self.imagen_ayuda) # para que la muestre en ese tick
         
         # Mensajes que se mostrarán según cada caso
         separador = "- "*45
