@@ -30,7 +30,7 @@ from random import randint
 from constantes import TICK, ORBITA
 from formato import FONT_LETRA_EMERGENCY, COLOR_LETRA_EMERGENCY
 from formato import FONT_LETRITA_EMERGENCY, COLOR_FONDO_EMERGENCY
-from formato import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY
+from formato import COLOR_LETRA_BOTON, COLOR_BOTON_EMERGENCY, FONT_LETRITITA_EMERGENCY
 from rutas_imagenes import EMERGENCY_CAMARA, EMERGENCY_VERIFICAR
 from rutas_imagenes import EMERGENCY_DEORBIT, EMERGENCY_DEORBIT_FUEGO
 from rutas_imagenes import EMERGENCY_HELP, EMERGENCY_FUEGO
@@ -72,7 +72,7 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         Label(
             self,
             text="Ilustraciones: Cynthia Ayerdi",
-            font=FONT_LETRITA_EMERGENCY,
+            font=FONT_LETRITITA_EMERGENCY,
             bg=COLOR_FONDO_EMERGENCY,
             fg=COLOR_LETRA_EMERGENCY
         ).place(x=10,y=10)

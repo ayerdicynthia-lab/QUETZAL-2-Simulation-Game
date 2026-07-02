@@ -41,12 +41,16 @@
 #   Modos de operación: 1.7.26
 #   - El label de arriba ya no muestra el mismo comando, sino muestra el modo de operación
 #     según la tarea.
+#   Reorganización de interfaz: 2.7.26
+#   - Historial a la izquierda, botones e ilustraciones a la derecha
 
 from tkinter import Tk, Label, Button
 from tkinter import scrolledtext as st, Frame, messagebox as msg
+from tkinter import simpledialog as sd
 from random import randint
 from constantes import TICK, ORBITA, miliseg_a_seg
 from formato import COLOR_FONDO_SCHEDULER,COLOR_LETRA_SCHEDULER
+from formato import COLOR_FONDO_IZQ_SCHEDULER, COLOR_FONDO_DER_SCHEDULER
 from formato import COLOR_BOTON,COLOR_LETRA_BOTON
 from formato import FONT_LETRA_SCHEDULER,FONT_LETRITA_SCHEDULER
 from formato import FONT_BOTON_COMANDO,COLOR_BOTON_COMANDO
@@ -58,12 +62,13 @@ from rutas_imagenes import SCHED_CAMARA, SCHED_RECOLECTAR_DATOS, SCHED_VERIFICAR
 from rutas_imagenes import SCHED_DEORBIT, SCHED_DEORBIT_FUEGO
 from clase_tarea import Tarea
 from pldobc_emergency import PLDOBC_EMERGENCY_CONTROL_MODE
+from pldobc import PLD_OBC_VENTANA
         
 class Scheduler_Ventana(Tk):
     def __init__ ( 
         self,
         # Las características de las tareas a realizar
-        prioridad_recoleccion:int,duracion_recoleccion:int,
+        prioridad_enviar:int,duracion_enviar:int,
         prioridad_capturar:int,duracion_capturar:int,
         prioridad_verificar:int,duracion_verificar:int
     )->None: 
@@ -76,85 +81,95 @@ class Scheduler_Ventana(Tk):
         self.title("Scheduler")
         
         # Un contenedor para centralizar los elementos en la pantalla
-        contenedor = Frame(self,bg=COLOR_FONDO_SCHEDULER)
-        contenedor.pack(expand=True) 
-        contenedor.grid_columnconfigure(0, weight=1)
+        contenedor = Frame(self, bg=COLOR_FONDO_SCHEDULER)
+        contenedor.pack(expand=True, fill='both', padx=20, pady=20)
+        contenedor.grid_columnconfigure(0, weight=3)
         contenedor.grid_columnconfigure(1, weight=1)
-        contenedor.grid_columnconfigure(2, weight=1)
-        contenedor.grid_columnconfigure(3, weight=1)
+        contenedor.grid_rowconfigure(4, weight=1)
                
         Label(
-            contenedor,text="Scheduler del Sistema Operativo en Tiempo Real",
-            bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
+            contenedor, text="Scheduler del Sistema Operativo en Tiempo Real",
+            bg=COLOR_FONDO_SCHEDULER, fg=COLOR_LETRA_SCHEDULER,
             font=FONT_LETRA_SCHEDULER
-        ).grid(column=0,row=0,columnspan=4,pady=0)
+        ).grid(column=0, row=0, sticky="w", pady=0)
         Label(
-            contenedor,bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
-            font=FONT_LETRITA_SCHEDULER,text="Ilustraciones: Cynthia Ayerdi"
-        ).grid(column=0,row=1,columnspan=4,pady=0)
-        
+            contenedor, bg=COLOR_FONDO_SCHEDULER, fg=COLOR_LETRA_SCHEDULER,
+            font=FONT_LETRITA_SCHEDULER, text="Ilustraciones: Cynthia Ayerdi"
+        ).grid(column=0, row=1, sticky="w", pady=0)
+                
         Button(
             contenedor,
-            text="Cerrar Scheduler",font="Arial 12 bold",
+            text="Cerrar Scheduler", font="Arial 12 bold",
             bg=COLOR_BOTON, fg=COLOR_LETRA_BOTON, 
             command=self.destroy
-        ).grid(column=0,row=2,columnspan=4,pady=2)
+        ).grid(column=0, row=3,sticky="w", pady=6)
         
+        izquierda = Frame(contenedor, bg=COLOR_FONDO_IZQ_SCHEDULER)
+        izquierda.grid(column=0, row=4, sticky='nsew', padx=(0, 16))
+        izquierda.grid_columnconfigure(0, weight=1)
+        izquierda.grid_rowconfigure(2, weight=1)
+        
+        derecha = Frame(contenedor, bg=COLOR_FONDO_DER_SCHEDULER)
+        derecha.grid(column=1, row=4, sticky='s', padx=(16, 0))
+        derecha.grid_columnconfigure(0, weight=1)
+               
         self.muestra_modo = Label(
-            contenedor,bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_MENSAJE,
-            font=FONT_LETRITA_SCHEDULER,text="MODO DE OPERACIÓN DE ARRANQUE"
+            izquierda, bg=COLOR_FONDO_IZQ_SCHEDULER, fg=COLOR_LETRA_MENSAJE,
+            font=FONT_LETRITA_SCHEDULER, text="MODO DE OPERACIÓN DE ARRANQUE"
         )
-        self.muestra_modo.grid(column=0,row=3,columnspan=4,pady=2)
+        self.muestra_modo.grid(column=0, row=1, pady=(7,0))       
         
-        Label(
-            contenedor,text=f"\n\nHISTORIAL",
-            bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
-            font=FONT_LETRA_SCHEDULER
-        ).grid(column=0,row=4,columnspan=4,pady=2)
         self.mensajes_anteriores = st.ScrolledText(
-            contenedor,width=90,height=9,
+            izquierda, width=60, height=9,
             font=FONT_LETRITA_SCHEDULER,
             fg=COLOR_LETRA_MENSAJE,
             state='disabled'
-            )
-        self.mensajes_anteriores.grid(column=0,row=5,columnspan=4,pady=2)
+        )
+        self.mensajes_anteriores.grid(column=0, row=2, pady=10,padx=10, sticky='nsew')
         
         Label(
-            contenedor,
-            text=f"{" ENVIAR COMANDOS ":-^200}",
-            bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
+            derecha,
+            text=f"- - - - ENVIAR COMANDOS - - - -",
+            bg=COLOR_FONDO_DER_SCHEDULER, fg=COLOR_LETRA_SCHEDULER,
             font=FONT_LETRITA_SCHEDULER
-        ).grid(column=0,row=6,columnspan=4,pady=2)
+        ).grid(column=0, row=0, padx=10, pady=(5, 12))
         
         # Botones para enviar comandos
         self.boton_enviar = Button(
-            contenedor,text="ENVIAR DATOS A COLEGIOS",
-            fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
+            derecha, text="ENVIAR DATOS A COLEGIOS",
+            fg=COLOR_LETRA_BOTON_COMANDO, bg=COLOR_BOTON_COMANDO,
             font=FONT_BOTON_COMANDO, width=23,
             command=self.comando_enviar_datos
         )
-        self.boton_enviar.grid(column=0,row=7,padx=4,pady=2)
+        self.boton_enviar.grid(column=0, row=1, pady=4, padx=10,sticky='ew')
         self.boton_tomar_fotos = Button(
-            contenedor,text="TOMAR FOTOS",
-            fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
-            font=FONT_BOTON_COMANDO, width=20,
+            derecha, text="TOMAR FOTOS",
+            fg=COLOR_LETRA_BOTON_COMANDO, bg=COLOR_BOTON_COMANDO,
+            font=FONT_BOTON_COMANDO, width=23,
             command=self.comando_tomar_fotos
         )
-        self.boton_tomar_fotos.grid(column=1,row=7,padx=4,pady=2)
+        self.boton_tomar_fotos.grid(column=0, row=2, pady=4,padx=10, sticky='ew')
         self.boton_verificar_fotos = Button(
-            contenedor,text="VERIFICAR FOTOS",
-            fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
-            font=FONT_BOTON_COMANDO, width=20,
+            derecha, text="VERIFICAR FOTOS",
+            fg=COLOR_LETRA_BOTON_COMANDO, bg=COLOR_BOTON_COMANDO,
+            font=FONT_BOTON_COMANDO, width=23,
             command=self.comando_verificar_fotos
         )
-        self.boton_verificar_fotos.grid(column=2,row=7,padx=4,pady=2)
+        self.boton_verificar_fotos.grid(column=0, row=3, pady=4,padx=10,sticky='ew')
+        self.boton_pldobc = Button(
+            derecha, text="PASAR MANDO A PLD-OBC",
+            fg=COLOR_LETRA_BOTON_COMANDO, bg=COLOR_BOTON_COMANDO,
+            font=FONT_BOTON_COMANDO, width=23,
+            command=self.mandar_pldobc
+        )
+        self.boton_pldobc.grid(column=0, row=4, pady=4, padx=10, sticky='ew')
         self.boton_deorbit = Button(
-            contenedor,text="DEORBITAR SATÉLITE",
-            fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_EMERGENCY,
-            font=FONT_BOTON_COMANDO, width=20,
+            derecha, text="DEORBITAR SATÉLITE",
+            fg=COLOR_LETRA_BOTON_COMANDO, bg=COLOR_BOTON_EMERGENCY,
+            font=FONT_BOTON_COMANDO, width=23,
             command=self.comando_deorbit
         )
-        self.boton_deorbit.grid(column=3,row=7,padx=4,pady=2)
+        self.boton_deorbit.grid(column=0, row=5, pady=(4,10),padx=10,sticky='ew')
         
         # - - - ILUSTRACIONES - - -
         
@@ -172,26 +187,42 @@ class Scheduler_Ventana(Tk):
             self,bg=COLOR_FONDO_SCHEDULER,
             image=self.satelite_simple # La inicial
         )
-        self.muestra_imagenes.place(x=15,y=10)
+        self.muestra_imagenes.place(x=1000,y=5)
+        
+        # guardar duracion y prioridad para usar pldobc
+        self.duracion_tomar_fotos = duracion_capturar
+        self.prioridad_tomar_fotos = prioridad_capturar
+        self.duracion_verificar_fotos = duracion_verificar
+        self.prioridad_verificar_fotos = prioridad_verificar
+        self.duracion_enviar_datos = duracion_enviar
+        self.prioridad_enviar_datos = prioridad_enviar
         
         # Guardar las tareas con la información enviada en los parámetros
         self.tEnviar : Tarea = Tarea(
-            prioridad=prioridad_recoleccion,
+            prioridad=self.prioridad_enviar_datos,
             id="Enviar datos del satélite a colegios",
-            estado="Blocked",tiempo_restante=duracion_recoleccion,tiempo_lleva=0,
+            estado="Blocked",tiempo_restante=self.duracion_enviar_datos,tiempo_lleva=0,
             imagen=self.satelite_datos,label_imagen=self.muestra_imagenes,
             modo_operacion="MODO DE OPERACIÓN DE PLD2: LORA"
         )
         self.tCaptura : Tarea = Tarea(
-            prioridad=prioridad_capturar,id="Tomar fotos de Guatemala",
-            estado="Blocked",tiempo_restante=duracion_capturar,tiempo_lleva=0,
-            imagen=self.satelite_camara,label_imagen=self.muestra_imagenes,
+            prioridad=self.prioridad_tomar_fotos,
+            id="Tomar fotos de Guatemala",
+            estado="Blocked",
+            tiempo_restante=self.duracion_tomar_fotos,
+            tiempo_lleva=0,
+            imagen=self.satelite_camara,
+            label_imagen=self.muestra_imagenes,
             modo_operacion="MODO DE OPERACIÓN DE PLD1: MILO"
         )
         self.tVerifica : Tarea = Tarea(
-            prioridad=prioridad_verificar,id="Verificar que las fotos no tengan nubes",
-            estado="Blocked",tiempo_restante=duracion_verificar,tiempo_lleva=0,
-            imagen=self.satelite_verifica,label_imagen=self.muestra_imagenes,
+            prioridad=self.prioridad_verificar_fotos,
+            id="Verificar que las fotos no tengan nubes",
+            estado="Blocked",
+            tiempo_restante=self.duracion_verificar_fotos,
+            tiempo_lleva=0,
+            imagen=self.satelite_verifica,
+            label_imagen=self.muestra_imagenes,
             modo_operacion="MODO DE OPERACIÓN DE PLD1: MILO"
         )
         
@@ -238,6 +269,7 @@ class Scheduler_Ventana(Tk):
         self.orbita = ORBITA # Inicializa la órbita en km del satélite
         
         self.emergencia = False # banderita de si estamos en emergencia
+        self.pldobc_en_uso = False # banderita de si estamos usando pldobc
         self.tarea_actual = self.tIdle # Se inicia en la tarea de espera
         self.after(3*TICK,self.tick_tick_tick)
        
@@ -281,6 +313,39 @@ class Scheduler_Ventana(Tk):
                 cuanto_para_no_comms=tiempo_no_comms
             )
             ventana_emergencia.mainloop()
+            
+    def mandar_pldobc(self)->None:
+        ingreso_segundos = sd.askinteger(
+            title="Duración PLD-OBC",
+            prompt="Ingrese cuánto tiempo tendrá el control la computadora hecha en casa (segundos)"
+        )
+        # si no ingresa nada pues nada
+        if ingreso_segundos is None:
+            return
+
+        duracion_pldobc_ms = ingreso_segundos * 1_000
+        
+        # la duracion de todas las tareas de pld milo
+        # es la suma de la duracion de cada tarea de milo
+        duracion_milo_ms = self.duracion_tomar_fotos+self.duracion_verificar_fotos 
+        
+        # la prioridad de milo es la mayor entre las prioridades de las dos tareas
+        prioridad_milo = self.prioridad_tomar_fotos if self.prioridad_tomar_fotos>self.prioridad_verificar_fotos else self.prioridad_verificar_fotos
+        
+        if prioridad_milo==self.prioridad_enviar_datos: 
+            # para evitar round robin "innecesario" en el modo de operación de pldobc
+            prioridad_milo+=1 # para que no sean iguales
+        
+        self.pldobc_en_uso=True
+        ventana_pldobc = PLD_OBC_VENTANA(
+            scheduler=self,
+            duracion_pldobc=duracion_pldobc_ms,
+            duracion_milo=duracion_milo_ms,
+            duracion_lora=self.duracion_enviar_datos,
+            prioridad_milo=prioridad_milo,
+            prioridad_lora=self.prioridad_enviar_datos
+        )
+        ventana_pldobc.mainloop()
             
     def comando_deorbit(self)-> None:
         # Comando para activar el mecanismo de deorbit del satélite
@@ -336,7 +401,7 @@ class Scheduler_Ventana(Tk):
         # crash mode
         
         # Mensajes que se mostrarán según cada caso
-        separador = "- "*85
+        separador = "- "*78
         
         if self.intento_actual>20:
             mensaje_muerte = f"No se ha logrado activar el deorbit tras 20 intentos."
@@ -382,7 +447,7 @@ class Scheduler_Ventana(Tk):
          
         #Inicializarlos por si acaso       
         mensaje = ""
-        mensaje_modo = ""
+        mensaje_modo = self.tDeorbit.modo_operacion # se cambiará en caso de que sea crash mode
         if self.orbita<=0:
             # Tarea finalizada
             mensaje = f"El satélite se ha deorbitado exitosamente"
@@ -390,7 +455,6 @@ class Scheduler_Ventana(Tk):
         else:
             if self.orbita<=300 and self.intentos_para_revivir<=20:
                 self.tDeorbit.imagen = self.satelite_deorbit_fuego 
-                mensaje_modo = self.tDeorbit.modo_operacion
             
             # casos de shut down en crash mode
             if self.intentos_para_revivir>20 and self.orbita>300:
@@ -482,8 +546,8 @@ class Scheduler_Ventana(Tk):
         
     def tick_tick_tick(self)->None:
         
-        if self.emergencia:
-            # Pausar el scheduler si estamos en emergencia
+        if self.emergencia or self.pldobc_en_uso:
+            # Pausar el scheduler si estamos en emergencia o usando pldobc
             return
         
         if self.esta_deorbitando:
@@ -496,6 +560,7 @@ class Scheduler_Ventana(Tk):
             self.boton_verificar_fotos.config(state="disabled")
             self.boton_tomar_fotos.config(state="disabled")
             self.boton_enviar.config(state="disabled")
+            self.boton_pldobc.config(state="disabled")
             self.boton_deorbit.config(state="disabled")
             return
         
@@ -554,7 +619,7 @@ class Scheduler_Ventana(Tk):
        
 if __name__ == "__main__": 
     scheduler = Scheduler_Ventana(
-        prioridad_recoleccion=1, duracion_recoleccion= 5_000,
+        prioridad_enviar=1, duracion_enviar= 5_000,
         prioridad_capturar= 2, duracion_capturar= 3_000,
         prioridad_verificar=1, duracion_verificar=4_000
     )

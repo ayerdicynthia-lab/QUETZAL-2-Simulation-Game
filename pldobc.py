@@ -10,6 +10,7 @@ from formato import COLOR_BOTON_PLDOBC, COLOR_FONDO_PLDOBC, COLOR_LETRA_PLDOBC
 from formato import COLOR_LETRA_BOTON_PLDOBC, FONT_LETRITITA_PLD_OBC
 from rutas_imagenes import SCHED_ANTENAS # CAMBIAR DESPUÉS A LAS OFICIALES
 from rutas_imagenes import hacer_imagen
+from clase_tarea import Tarea
 
 class PLD_OBC_VENTANA(Toplevel):
     def __init__(
@@ -22,6 +23,10 @@ class PLD_OBC_VENTANA(Toplevel):
         prioridad_lora:int
     )->None:
         super().__init__()
+        
+        self.scheduler = scheduler
+        self.tiempo_maximo = duracion_pldobc # para que no se pase
+        self.tiempo_corriendo = 0 # inicializando para ir sumando en cada tick
         
         self.geometry("670x650+20+20")
         self.resizable(False,False)
@@ -108,6 +113,38 @@ class PLD_OBC_VENTANA(Toplevel):
             fg=COLOR_LETRA_PLDOBC,
             font=FONT_LETRITITA_PLD_OBC
         ).place(x=50,y=313)
+        
+        # Definicion de tareas
+        self.tMILO = Tarea(
+            prioridad=prioridad_milo,
+            id="Tomar y verificar fotos de Guatemala",
+            estado="Blocked",
+            tiempo_restante=duracion_milo,
+            tiempo_lleva=0,
+            imagen=self.imagen, #por ahora, cambiar después
+            modo_operacion="a", # no es relevante porque todo esto es pld-obc operation mode
+            label_imagen=self.muestra_imagenes
+        )
+        self.tLORA = Tarea(
+            prioridad=prioridad_lora,
+            id="Enviar datos del satélite a colegios",
+            estado="Blocked",
+            tiempo_restante=duracion_lora,
+            tiempo_lleva=0,
+            imagen=self.imagen, #por ahora, cambiar después
+            modo_operacion="a", # no es relevante porque todo esto es pld-obc operation mode
+            label_imagen=self.muestra_imagenes
+        )
+        self.tIDLE = Tarea(
+            prioridad=0,
+            id="Verificando el funcionamiento de PLD-OBC",
+            estado="Running",
+            tiempo_restante=1_000_000,
+            tiempo_lleva=0,
+            imagen=self.imagen, #por ahora, cambiar después
+            modo_operacion="a", # no es relevante porque todo esto es pld-obc operation mode
+            label_imagen=self.muestra_imagenes
+        )
              
 if __name__ == "__main__":
     ventana = PLD_OBC_VENTANA(
