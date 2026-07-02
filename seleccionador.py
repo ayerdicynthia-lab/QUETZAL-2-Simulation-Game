@@ -4,7 +4,7 @@
 # AUTOR: Cynthia Ayerdi. 
 #   e12.cynthiamaria.ayerdih@suizoamericano.edu.gt / ayerdicynthia@gmail.com
 # ASESORÍA: Luis Carranza, Kuk Ho Chung
-# ILUSTRACIONES: Cynthia Ayerdi, Natalia Sánchez
+# ILUSTRACIONES: Natalia Sánchez
 # FIN EN MENTE: Crear una simulación didáctica de la computadora de Quetzal-2
 # DESCRIPCIÓN: Permite que el usuario seleccione la duración y la prioridad de cada una de las
 # tareas que realiza la simulación.
@@ -232,6 +232,17 @@ class Seleccionador(Tk):
             bg=COLOR_FONDO_SELECT,
             image=self.deorbitselect
         ).place(x=50,y=260)
+
+        # Nombre autora ilustraciones
+        contenedor_credito = Frame(self, bg=COLOR_FONDO_SELECT)
+        contenedor_credito.place(x=10, y=500)
+        Label(
+            contenedor_credito,
+            text="Ilustraciones: Natalia Sánchez",
+            font=FONT_LETRITA_SELECT,
+            fg=COLOR_LETRITA_SELECT,
+            background=COLOR_FONDO_SELECT
+        ).pack(anchor="w")
         
     def acerca_de(self):
         ventana_acercade = Autores()

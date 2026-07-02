@@ -14,8 +14,8 @@
 #   Fecha de creación: 1.7.26
 
 from tkinter import Toplevel, Label
-from constantes import COLOR_FONDO_ACERCADE, COLOR_LETRA_ACERCADE
-from constantes import FONT_LETRA_ACERCADE
+from formato import COLOR_FONDO_ACERCADE, COLOR_LETRA_ACERCADE
+from formato import FONT_LETRA_ACERCADE
 
 class Autores(Toplevel):
     def __init__(self)-> None:

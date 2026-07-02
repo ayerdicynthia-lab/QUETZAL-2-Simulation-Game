@@ -70,6 +70,14 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         Label(
             self,
             text="LA COMPUTADORA PRINCIPAL HA FALLADO",
+            font=FONT_LETRITA_EMERGENCY,
+            bg=COLOR_FONDO_EMERGENCY,
+            fg=COLOR_LETRA_EMERGENCY
+        ).pack(pady=2)
+        
+        Label(
+            self,
+            text="LA COMPUTADORA PRINCIPAL HA FALLADO",
             font=FONT_LETRA_EMERGENCY,
             bg=COLOR_FONDO_EMERGENCY,
             fg=COLOR_LETRA_EMERGENCY

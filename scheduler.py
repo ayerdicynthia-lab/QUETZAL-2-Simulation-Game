@@ -4,7 +4,7 @@
 # AUTOR: Cynthia Ayerdi. 
 #   e12.cynthiamaria.ayerdih@suizoamericano.edu.gt / ayerdicynthia@gmail.com
 # ASESORÍA: Luis Carranza, Kuk Ho Chung
-# ILUSTRACIONES: Cynthia Ayerdi, Natalia Sánchez
+# ILUSTRACIONES: Cynthia Ayerdi
 # FIN EN MENTE: Crear una simulación didáctica de la computadora de Quetzal-2
 # DESCRIPCIÓN: Scheduler basado en un Sistema Operativo en Tiempo Real usando prioridades 
 # y tiempos de ejecución. El usuario puede enviar alguno de cuatro comandos, cada uno con una 
@@ -87,40 +87,44 @@ class Scheduler_Ventana(Tk):
             contenedor,text="Scheduler del Sistema Operativo en Tiempo Real",
             bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
             font=FONT_LETRA_SCHEDULER
-        ).grid(column=0,row=0,columnspan=4,pady=2)
+        ).grid(column=0,row=0,columnspan=4,pady=0)
+        Label(
+            contenedor,bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
+            font=FONT_LETRITA_SCHEDULER,text="Ilustraciones: Cynthia Ayerdi"
+        ).grid(column=0,row=1,columnspan=4,pady=0)
         
         Button(
             contenedor,
             text="Cerrar Scheduler",font="Arial 12 bold",
             bg=COLOR_BOTON, fg=COLOR_LETRA_BOTON, 
             command=self.destroy
-        ).grid(column=0,row=1,columnspan=4,pady=2)
+        ).grid(column=0,row=2,columnspan=4,pady=2)
         
-        self.actual_mensaje = Label(
+        self.muestra_modo = Label(
             contenedor,bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_MENSAJE,
             font=FONT_LETRITA_SCHEDULER,text="MODO DE OPERACIÓN DE ARRANQUE"
         )
-        self.actual_mensaje.grid(column=0,row=2,columnspan=4,pady=2)
+        self.muestra_modo.grid(column=0,row=3,columnspan=4,pady=2)
         
         Label(
-            contenedor,text=f"\n\n\nHISTORIAL",
+            contenedor,text=f"\n\nHISTORIAL",
             bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
             font=FONT_LETRA_SCHEDULER
-        ).grid(column=0,row=3,columnspan=4,pady=2)
+        ).grid(column=0,row=4,columnspan=4,pady=2)
         self.mensajes_anteriores = st.ScrolledText(
             contenedor,width=90,height=9,
             font=FONT_LETRITA_SCHEDULER,
             fg=COLOR_LETRA_MENSAJE,
             state='disabled'
             )
-        self.mensajes_anteriores.grid(column=0,row=4,columnspan=4,pady=2)
+        self.mensajes_anteriores.grid(column=0,row=5,columnspan=4,pady=2)
         
         Label(
             contenedor,
             text=f"{" ENVIAR COMANDOS ":-^200}",
             bg=COLOR_FONDO_SCHEDULER,fg=COLOR_LETRA_SCHEDULER,
             font=FONT_LETRITA_SCHEDULER
-        ).grid(column=0,row=5,columnspan=4,pady=2)
+        ).grid(column=0,row=6,columnspan=4,pady=2)
         
         # Botones para enviar comandos
         self.boton_enviar = Button(
@@ -129,28 +133,28 @@ class Scheduler_Ventana(Tk):
             font=FONT_BOTON_COMANDO, width=20,
             command=self.comando_enviar_datos
         )
-        self.boton_enviar.grid(column=0,row=6,padx=4,pady=2)
+        self.boton_enviar.grid(column=0,row=7,padx=4,pady=2)
         self.boton_tomar_fotos = Button(
             contenedor,text="TOMAR FOTOS",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
             font=FONT_BOTON_COMANDO, width=20,
             command=self.comando_tomar_fotos
         )
-        self.boton_tomar_fotos.grid(column=1,row=6,padx=4,pady=2)
+        self.boton_tomar_fotos.grid(column=1,row=7,padx=4,pady=2)
         self.boton_verificar_fotos = Button(
             contenedor,text="VERIFICAR FOTOS",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
             font=FONT_BOTON_COMANDO, width=20,
             command=self.comando_verificar_fotos
         )
-        self.boton_verificar_fotos.grid(column=2,row=6,padx=4,pady=2)
+        self.boton_verificar_fotos.grid(column=2,row=7,padx=4,pady=2)
         self.boton_deorbit = Button(
             contenedor,text="DEORBITAR SATÉLITE",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_EMERGENCY,
             font=FONT_BOTON_COMANDO, width=20,
             command=self.comando_deorbit
         )
-        self.boton_deorbit.grid(column=3,row=6,padx=4,pady=2)
+        self.boton_deorbit.grid(column=3,row=7,padx=4,pady=2)
         
         # - - - ILUSTRACIONES - - -
         
@@ -299,7 +303,7 @@ class Scheduler_Ventana(Tk):
             mensaje2 = "Quedan 20 intentos"
             self.meter_mensaje(mensaje1,self.mensajes_anteriores)
             self.meter_mensaje(mensaje2,self.mensajes_anteriores)
-            self.actual_mensaje['text'] = "CRASH MODE !!"
+            self.muestra_modo['text'] = "CRASH MODE !!"
             
             # Aunque no esté realmente funcionando el deorbit se activa esta banderita
             # para que deorbit tome prioridad y deje de correr el resto del scheduler
@@ -406,7 +410,7 @@ class Scheduler_Ventana(Tk):
             
             mensaje = f"Deorbitando satélite... Órbita de {self.orbita} km"
             
-        self.actual_mensaje['text']= mensaje_modo
+        self.muestra_modo['text']= mensaje_modo
         self.meter_mensaje(mensaje,donde=self.mensajes_anteriores)
         self.after(TICK,self.loop_deorbitar)
        
@@ -530,9 +534,8 @@ class Scheduler_Ventana(Tk):
         self.meter_mensaje(mensaje=mensaje,donde=self.mensajes_anteriores) 
         
         # Actualiza el modo de operación que aparece arriba
-        self.actual_mensaje['text'] = self.tarea_actual.modo_operacion 
+        self.muestra_modo['text'] = self.tarea_actual.modo_operacion 
         
-            
         # Para evitar spam, se desactivan los botones si la tarea ya está corriendo o en cola
         self.boton_enviar.config(
             state="disabled" if self.tEnviar.estado in ["Ready", "Running"]
