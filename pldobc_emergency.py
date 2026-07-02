@@ -4,6 +4,7 @@
 # AUTOR: Cynthia Ayerdi. 
 #   e12.cynthiamaria.ayerdih@suizoamericano.edu.gt / ayerdicynthia@gmail.com
 # ASESORÍA: Luis Carranza, Kuk Ho Chung
+# ILUSTRACIONES: Cynthia Ayerdi
 # FIN EN MENTE: Crear una simulación didáctica de la computadora de Quetzal-2
 # DESCRIPCIÓN: Interfaz toplevel para una emergencia pseudoaleatoria donde la computadora
 # principal del satélite deja de funcionar y la computadora hecha en casa debe tomar el mando.
@@ -67,13 +68,14 @@ class PLDOBC_EMERGENCY_CONTROL_MODE(Toplevel): # Será una ventanita que se abri
         )
         self.muestra_imagenes.pack()
         
+        # Crédito de ilustraciones
         Label(
             self,
-            text="LA COMPUTADORA PRINCIPAL HA FALLADO",
+            text="Ilustraciones: Cynthia Ayerdi",
             font=FONT_LETRITA_EMERGENCY,
             bg=COLOR_FONDO_EMERGENCY,
             fg=COLOR_LETRA_EMERGENCY
-        ).pack(pady=2)
+        ).place(x=10,y=10)
         
         Label(
             self,

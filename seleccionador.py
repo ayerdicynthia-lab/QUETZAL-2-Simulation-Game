@@ -234,15 +234,13 @@ class Seleccionador(Tk):
         ).place(x=50,y=260)
 
         # Nombre autora ilustraciones
-        contenedor_credito = Frame(self, bg=COLOR_FONDO_SELECT)
-        contenedor_credito.place(x=10, y=500)
         Label(
-            contenedor_credito,
+            self,
             text="Ilustraciones: Natalia Sánchez",
             font=FONT_LETRITA_SELECT,
             fg=COLOR_LETRITA_SELECT,
             background=COLOR_FONDO_SELECT
-        ).pack(anchor="w")
+        ).place(x=10,y=480)
         
     def acerca_de(self):
         ventana_acercade = Autores()
