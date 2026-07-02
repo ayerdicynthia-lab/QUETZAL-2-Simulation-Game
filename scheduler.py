@@ -543,12 +543,34 @@ class Scheduler_Ventana(Tk):
         donde.insert("end",f"{mensaje}\n")
         donde.config(state="disabled")
         donde.see("end") # Baja al final del texto
+      
+    def estado_botones(self,activar:bool)->None:
+        
+        #activa o desactiva todos los botones según el parametro ingresado
+        
+        if activar:
+            #activar botones
+            self.boton_verificar_fotos.config(state="normal")
+            self.boton_tomar_fotos.config(state="normal")
+            self.boton_enviar.config(state="normal")
+            self.boton_pldobc.config(state="normal")
+            self.boton_deorbit.config(state="normal")  
+        else:
+            #desactivar botones
+            self.boton_verificar_fotos.config(state="disabled")
+            self.boton_tomar_fotos.config(state="disabled")
+            self.boton_enviar.config(state="disabled")
+            self.boton_pldobc.config(state="disabled")
+            self.boton_deorbit.config(state="disabled")  
         
     def tick_tick_tick(self)->None:
-        
+                
         if self.emergencia or self.pldobc_en_uso:
             # Pausar el scheduler si estamos en emergencia o usando pldobc
+            self.estado_botones(activar=False) # desactivar botones
             return
+        
+        
         
         if self.esta_deorbitando:
             # No hacer más tareas que la deorbitación
@@ -556,13 +578,10 @@ class Scheduler_Ventana(Tk):
             # Lo podríamos hacer con prioridad máxima tmbién
             # Pero ya está de esta manera en PLDOBC emergency
             
-            #desactivar botones
-            self.boton_verificar_fotos.config(state="disabled")
-            self.boton_tomar_fotos.config(state="disabled")
-            self.boton_enviar.config(state="disabled")
-            self.boton_pldobc.config(state="disabled")
-            self.boton_deorbit.config(state="disabled")
+            self.estado_botones(activar=False) # desactivar botones
             return
+        
+        self.estado_botones(activar=True)
         
         # Para que no la siga tomando en cuenta si se acabó
         if self.tarea_actual.estado == "Blocked": 

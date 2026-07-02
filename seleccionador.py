@@ -53,10 +53,10 @@ class Seleccionador(Tk):
         contenedor.grid_columnconfigure(1, weight=1)
         contenedor.grid_columnconfigure(2, weight=1)
         
-        # Recolección de datos
+        # Enviar datos
         Label(
             contenedor,
-            text="Tarea RECOLECCIÓN DE DATOS",
+            text="Tarea ENVIAR DATOS",
             font = FONT_LETRA_SELECT,
             fg=COLOR_LETRA_SELECT,
             background=COLOR_FONDO_SELECT
@@ -73,7 +73,7 @@ class Seleccionador(Tk):
         ).grid(
             row=1,column=0,padx=5,pady=5,sticky="E"
         )      
-        self.ingreso_prioridad_recoleccion_datos = Spinbox(
+        self.ingreso_prioridad_enviar_datos = Spinbox(
             contenedor,from_=1,to=5,width=8,
             textvariable=IntVar(value=1), #La opción predeterminada
             font=FONT_LETRITA_SELECT,
@@ -81,7 +81,7 @@ class Seleccionador(Tk):
             fg=COLOR_LETRA_SELECT,
             state="readonly" # No permite que el usuario ingrese sus propios valores
         ) 
-        self.ingreso_prioridad_recoleccion_datos.grid(row=1,column=1,padx=5,pady=5,sticky='W') 
+        self.ingreso_prioridad_enviar_datos.grid(row=1,column=1,padx=5,pady=5,sticky='W') 
         # Duración
         Label(
             contenedor,
@@ -92,7 +92,7 @@ class Seleccionador(Tk):
         ).grid(
             row=2,column=0,padx=5,pady=5,sticky="E"
         )      
-        self.ingreso_duracion_recoleccion_datos = Spinbox(
+        self.ingreso_duracion_enviar_datos = Spinbox(
             contenedor,from_=1,to=10,width=8,
             textvariable=IntVar(value=8), #La opción predeterminada
             font=FONT_LETRITA_SELECT,
@@ -100,7 +100,7 @@ class Seleccionador(Tk):
             fg=COLOR_LETRA_SELECT,
             state="readonly" # No permite que el usuario ingrese sus propios valores
         ) 
-        self.ingreso_duracion_recoleccion_datos.grid(row=2,column=1,padx=5,pady=5,sticky='W')
+        self.ingreso_duracion_enviar_datos.grid(row=2,column=1,padx=5,pady=5,sticky='W')
         
         # Para la captura de imágenes ("sólo sobre Guatemala")
         Label(
@@ -252,18 +252,18 @@ class Seleccionador(Tk):
         
         # En el spinbox sólo se pueden seleccionar los enteros ahí colocados
         # No es necesario validar este ingreso
-        prioridad_recoleccion_datos : int= int(self.ingreso_prioridad_recoleccion_datos.get()) 
+        prioridad_enviar_datos : int= int(self.ingreso_prioridad_enviar_datos.get()) 
         prioridad_captura_imagenes : int = int(self.ingreso_prioridad_captura_imagenes.get())
         prioridad_verifica_imagenes : int = int(self.ingreso_prioridad_verifica_imagenes.get())
         
         # El ingreso es en segundos, por lo que se debe pasar a milisegundos
         # multiplicando el valor ingresado por 1000
-        duracion_recoleccion_datos = int(self.ingreso_duracion_recoleccion_datos.get())*1000
+        duracion_enviar_datos = int(self.ingreso_duracion_enviar_datos.get())*1000
         duracion_captura_imagenes = int(self.ingreso_duracion_captura_imagenes.get())*1000
         duracion_verifica_imagenes = int(self.ingreso_duracion_verifica_imagenes.get())*1000
               
         # Para que el usuario pueda verificar lo que ingresó antes de continuar
-        confirmacionT1 : str = f"Recolectar datos: Prioridad {prioridad_recoleccion_datos}. Duración {duracion_recoleccion_datos//1000} segundos."
+        confirmacionT1 : str = f"Enviar datos: Prioridad {prioridad_enviar_datos}. Duración {duracion_enviar_datos//1000} segundos."
         confirmacionT2 : str = f"Tomar fotos: Prioridad {prioridad_captura_imagenes}. Duración {duracion_captura_imagenes//1000} segundos."
         confirmacionT3 : str = f"Verificar fotos: Prioridad {prioridad_verifica_imagenes}. Duración {duracion_verifica_imagenes//1000} segundos."
         
@@ -277,8 +277,8 @@ class Seleccionador(Tk):
                 duracion_capturar=duracion_captura_imagenes,
                 prioridad_verificar=prioridad_verifica_imagenes,
                 duracion_verificar=duracion_verifica_imagenes,
-                prioridad_recoleccion=prioridad_recoleccion_datos,
-                duracion_recoleccion=duracion_recoleccion_datos
+                prioridad_enviar=prioridad_enviar_datos,
+                duracion_enviar=duracion_enviar_datos
             ) 
         
              # Quitar la ventanita del seleccionador
