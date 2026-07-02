@@ -11,6 +11,7 @@
 # PROCESOS PREVIOS: N/A
 # HISTORIA
 #   Separación del archivo general constantes: 1.7.26
+#   Formato PLD-OBC: 2.7.26
 
 # Constantes de colores usados en el seleccionador y en el scheduler
 COLOR_BOTON = "#B01414"
@@ -44,3 +45,13 @@ FONT_LETRITA_EMERGENCY = "Helvetica 16 bold"
 COLOR_FONDO_ACERCADE = "#8AB7F5"
 COLOR_LETRA_ACERCADE = "#103A61"
 FONT_LETRA_ACERCADE = "Helvetica 18 bold"
+
+# Consantes de colores y fonts de la ventana de pld obc
+COLOR_FONDO_PLDOBC = "#fcffbf"
+COLOR_LETRA_PLDOBC = "#0E5C18"
+FONT_LETRA_PLDOBC = "Calibri 22 bold"
+FONT_LETRITA_PLDOBC = "Calibri 16 bold"
+FONT_LETRITITA_PLD_OBC = "Calibri 12"
+COLOR_BOTON_PLDOBC = "#FFDB3B"
+COLOR_LETRA_BOTON_PLDOBC = "#562500"
+FONT_BOTON_PLDOBC = "Helvetica 15 bold"

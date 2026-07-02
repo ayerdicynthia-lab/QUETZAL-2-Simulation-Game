@@ -128,9 +128,9 @@ class Scheduler_Ventana(Tk):
         
         # Botones para enviar comandos
         self.boton_enviar = Button(
-            contenedor,text="ENVIAR DATOS",
+            contenedor,text="ENVIAR DATOS A COLEGIOS",
             fg=COLOR_LETRA_BOTON_COMANDO,bg=COLOR_BOTON_COMANDO,
-            font=FONT_BOTON_COMANDO, width=20,
+            font=FONT_BOTON_COMANDO, width=23,
             command=self.comando_enviar_datos
         )
         self.boton_enviar.grid(column=0,row=7,padx=4,pady=2)
