@@ -43,6 +43,8 @@
 #     según la tarea.
 #   Reorganización de interfaz: 2.7.26
 #   - Historial a la izquierda, botones e ilustraciones a la derecha
+#   Mando a PLD-OBC: 2.7.26
+#   - Manda una tarea para LORA y una tarea para MILO con el fin de verificar la OBC hecha en casa
 
 from tkinter import Tk, Label, Button
 from tkinter import scrolledtext as st, Frame, messagebox as msg
@@ -226,11 +228,6 @@ class Scheduler_Ventana(Tk):
             modo_operacion="MODO DE OPERACIÓN DE PLD1: MILO"
         )
         
-        # Guardar el tiempo que toma cada tarea para volver lo a usar
-        self.tiempo_recoleccion : int = self.tEnviar.tiempo_restante
-        self.tiempo_captura : int = self.tCaptura.tiempo_restante
-        self.tiempo_verifica : int= self.tVerifica.tiempo_restante
-        
         # inicializarla sólo para el loop deorbit normal
         # estos intentos son para reactivar el deorbit si falla
         # se asigna un valor sólo si entra al crash mode
@@ -294,7 +291,7 @@ class Scheduler_Ventana(Tk):
         tarea.tiempo_lleva = 0
     
     def emergencia_aleatoria(self)->None:
-        num_para_emergencia = randint(1,6)
+        num_para_emergencia = randint(1,8)
         if num_para_emergencia == 1: #un número arbitrario
             self.emergencia=True
             
@@ -480,15 +477,15 @@ class Scheduler_Ventana(Tk):
        
     def comando_enviar_datos(self)->None:
         self.emergencia_aleatoria() # en cada comando se ve si habrá emergencia pseudoaleatoria   
-        self.comandan(tarea=self.tEnviar,tiempo=self.tiempo_recoleccion)
+        self.comandan(tarea=self.tEnviar,tiempo=self.duracion_enviar_datos)
         
     def comando_tomar_fotos(self)->None:
         self.emergencia_aleatoria()
-        self.comandan(tarea=self.tCaptura,tiempo=self.tiempo_captura)
+        self.comandan(tarea=self.tCaptura,tiempo=self.duracion_tomar_fotos)
         
     def comando_verificar_fotos(self)->None:
         self.emergencia_aleatoria()
-        self.comandan(tarea=self.tVerifica,tiempo=self.tiempo_verifica)
+        self.comandan(tarea=self.tVerifica,tiempo=self.duracion_verificar_fotos)
         
     def buscar_cuales_estan_listas(self)->list[Tarea]:
         # De la lista de tareas encuentra cuáles están en un estado ready
@@ -568,9 +565,7 @@ class Scheduler_Ventana(Tk):
         if self.emergencia or self.pldobc_en_uso:
             # Pausar el scheduler si estamos en emergencia o usando pldobc
             self.estado_botones(activar=False) # desactivar botones
-            return
-        
-        
+            return      
         
         if self.esta_deorbitando:
             # No hacer más tareas que la deorbitación
@@ -580,9 +575,7 @@ class Scheduler_Ventana(Tk):
             
             self.estado_botones(activar=False) # desactivar botones
             return
-        
-        self.estado_botones(activar=True)
-        
+                
         # Para que no la siga tomando en cuenta si se acabó
         if self.tarea_actual.estado == "Blocked": 
             self.tarea_actual = self.tIdle
